@@ -12,9 +12,9 @@
       ENV NIFI_SCRIPTS_DIR=${NIFI_BASE_DIR}/scripts
       ENV OPENSHIFT_DEFAULT_PERMISSIONS=777
 
-      ADD sh/ ${NIFI_BASE_DIR}/scripts/
-
       RUN umask 000
+
+      ADD sh/ ${NIFI_BASE_DIR}/scripts/
 
       # Setup NiFi user and create necessary directories
       RUN mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_BASE_DIR} \
@@ -46,7 +46,7 @@
             ${NIFI_HOME}/provenance_repository \
             ${NIFI_HOME}/state
 
-      RUN echo "#!/bin/sh\n" > $NIFI_HOME/bin/nifi-env.sh
+      RUN echo "#!/bin/sh\n" > ${NIFI_HOME}/bin/nifi-env.sh
 
       EXPOSE 8080 8443 10000
 
