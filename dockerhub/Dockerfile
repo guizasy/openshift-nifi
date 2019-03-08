@@ -9,6 +9,7 @@
       ENV NIFI_HOME=${NIFI_BASE_DIR}/nifi-current
       ENV NIFI_PID_DIR=${NIFI_HOME}/run
       ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
+      ENV NIFI_SCRIPTS_DIR=${NIFI_BASE_DIR}/scripts
       ENV OPENSHIFT_DEFAULT_PERMISSIONS=777
 
       ADD sh/ ${NIFI_BASE_DIR}/scripts/
@@ -27,6 +28,7 @@
           && rm ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}-bin.zip \
           && mv ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION} ${NIFI_HOME} \
           && chmod -R ${OPENSHIFT_DEFAULT_PERMISSIONS} ${NIFI_HOME} \
+          && chmod -R ${OPENSHIFT_DEFAULT_PERMISSIONS} ${NIFI_SCRIPTS_DIR} \
           && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/conf \
           && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/database_repository \
           && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/flowfile_repository \
