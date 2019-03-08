@@ -9,13 +9,14 @@
       ENV NIFI_HOME=${NIFI_BASE_DIR}/nifi-current
       ENV NIFI_PID_DIR=${NIFI_HOME}/run
       ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
+      ENV OPENSHIFT_DEFAULT_PERMISSIONS="777"
 
       ADD sh/ ${NIFI_BASE_DIR}/scripts/
 
       RUN umask 000
 
       # Setup NiFi user and create necessary directories
-      RUN mkdir -m 777 -p ${NIFI_BASE_DIR} \
+      RUN mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_BASE_DIR} \
           && chown -R 0 ${NIFI_BASE_DIR} \
           && apt-get update \
           && apt-get install -y jq xmlstarlet procps
@@ -26,13 +27,13 @@
           && unzip ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}-bin.zip -d ${NIFI_BASE_DIR} \
           && rm ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}-bin.zip \
           && mv ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION} ${NIFI_HOME} \
-          && mkdir -p ${NIFI_HOME}/conf \
-          && mkdir -m 777 -p ${NIFI_HOME}/database_repository \
-          && mkdir -m 777 -p ${NIFI_HOME}/flowfile_repository \
-          && mkdir -m 777 -p ${NIFI_HOME}/content_repository \
-          && mkdir -m 777 -p ${NIFI_HOME}/provenance_repository \
-          && mkdir -m 777 -p ${NIFI_HOME}/state \
-          && mkdir -m 777 -p ${NIFI_LOG_DIR} \
+          && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/conf \
+          && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/database_repository \
+          && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/flowfile_repository \
+          && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/content_repository \
+          && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/provenance_repository \
+          && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/state \
+          && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_LOG_DIR} \
           && ln -s ${NIFI_HOME} ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}
 
       VOLUME ${NIFI_LOG_DIR} \
