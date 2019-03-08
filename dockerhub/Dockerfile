@@ -9,7 +9,7 @@
       ENV NIFI_HOME=${NIFI_BASE_DIR}/nifi-current
       ENV NIFI_PID_DIR=${NIFI_HOME}/run
       ENV NIFI_LOG_DIR=${NIFI_HOME}/logs
-      ENV OPENSHIFT_DEFAULT_PERMISSIONS="777"
+      ENV OPENSHIFT_DEFAULT_PERMISSIONS=777
 
       ADD sh/ ${NIFI_BASE_DIR}/scripts/
 
@@ -17,7 +17,6 @@
 
       # Setup NiFi user and create necessary directories
       RUN mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_BASE_DIR} \
-          && chown -R 0 ${NIFI_BASE_DIR} \
           && apt-get update \
           && apt-get install -y jq xmlstarlet procps
 
@@ -27,6 +26,7 @@
           && unzip ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}-bin.zip -d ${NIFI_BASE_DIR} \
           && rm ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION}-bin.zip \
           && mv ${NIFI_BASE_DIR}/nifi-${NIFI_VERSION} ${NIFI_HOME} \
+          && chmod -R ${OPENSHIFT_DEFAULT_PERMISSIONS} ${NIFI_HOME} \
           && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/conf \
           && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/database_repository \
           && mkdir -m ${OPENSHIFT_DEFAULT_PERMISSIONS} -p ${NIFI_HOME}/flowfile_repository \
